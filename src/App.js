@@ -1,24 +1,48 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import Header from "./components/Header";
+import { Container } from "reactstrap";
+import ImageList from "./components/images/ImageList";
+import { fetchData } from "./data";
 
 function App() {
+  const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetchData()
+      .then((response) => {
+        setLoading(false);
+        setImages(response);
+      })
+      .catch((error) => {});
+  }, []);
+
+  const handleFeatured = (imageId) => {
+    setImages(
+      images.map((image) => {
+        if (image._id === imageId) {
+          return {
+            ...image,
+            featured: !image.featured,
+          };
+        }
+
+        return image;
+      })
+    );
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container className="App">
+      <Header />
+      <div className="mt-3">
+        <ImageList
+          loading={loading}
+          images={images}
+          handleFeatured={handleFeatured}
+        />
+      </div>
+    </Container>
   );
 }
 
