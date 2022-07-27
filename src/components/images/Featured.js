@@ -4,11 +4,10 @@ import { Star } from "react-feather";
 function Featured(props) {
   const { featured, onClick } = props;
   return (
-    <div>
-      <Button color="default" onClick={onClick}>
-        <Star style={{ fill: featured ? "yellow" : " " }} />
-      </Button>
-    </div>
+    <Button color="default" onClick={onClick} style={{ boxShadow: 'none'}}>
+      <Star style={{ fill: featured ? "green" : " " ,
+                     stroke: featured ? 'green' : " "}} />
+    </Button>
   );
 }
 

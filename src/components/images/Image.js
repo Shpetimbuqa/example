@@ -9,18 +9,27 @@ import {
   CardTitle,
   Button,
 } from "reactstrap";
+import ImagesContext, {
+  useImagesContext,
+} from "../../lib/context/ImagesContext";
 
 export default function Image(props) {
-  const { image, handleFeatured } = props;
+  const { image } = props;
 
-  const handleOnClick = () => {
-    handleFeatured(image._id);
+  const imagesContext = useImagesContext();
+
+  const handleOnToggleFeatured = () => {
+    imagesContext.toggleFeatured(image._id);
+  };
+
+  const handleOnDelete = () => {
+    imagesContext.deleteImage(image._id);
   };
 
   return (
     <Col xs={12} md={4} lg={3}>
       <Card className="p-2">
-        <Featured featured={image.featured} onClick={handleOnClick} />
+        <Featured featured={image.featured} onClick={handleOnToggleFeatured} />
         <CardImg
           top
           style={{ objectFit: "contain", marginTop: 10 }}
@@ -35,7 +44,9 @@ export default function Image(props) {
           <Button color="primary" style={{ marginRight: 10 }}>
             Edit
           </Button>
-          <Button color="danger">Delete</Button>
+          <Button color="danger" onClick={handleOnDelete}>
+            Delete
+          </Button>
         </CardBody>
       </Card>
     </Col>
